@@ -29,18 +29,52 @@ SETUP (first time only):
 
 import os
 import subprocess
+import sys
 
 
-# Path to Wav2Lip repo — update if installed elsewhere
-WAV2LIP_PATH = os.getenv("WAV2LIP_PATH", "./Wav2Lip")
+# Path to Wav2Lip repo — try multiple approaches
+# First try environment variable, then hardcoded, then relative
+_env_path = os.getenv("WAV2LIP_PATH", "").strip()
+_hardcoded_path = "D:\\human_seller\\Wav2Lip"  # Windows absolute path
+_relative_path = "./Wav2Lip"  # Current directory
+
+# Try to find the correct path
+WAV2LIP_PATH = None
+for candidate in [_env_path, _hardcoded_path, _relative_path]:
+    if candidate and os.path.isdir(candidate):
+        WAV2LIP_PATH = os.path.normpath(candidate)
+        break
+
+# If still not found, use hardcoded as default (will fail gracefully later)
+if not WAV2LIP_PATH:
+    WAV2LIP_PATH = os.path.normpath(_hardcoded_path)
 
 
 def _check_wav2lip() -> bool:
     """Check if Wav2Lip is installed and accessible."""
+    # Debug: print what path we're checking
+    print(f"[Video] Checking Wav2Lip at: {WAV2LIP_PATH}")
+    
     if not os.path.isdir(WAV2LIP_PATH):
+        print(f"[Video] Directory not found: {WAV2LIP_PATH}")
         return False
-    required_files = ["inference.py", "checkpoints/wav2lip_gan.pth", "face_detection/detection/sfd/s3fd.pth"]
-    return all(os.path.exists(os.path.join(WAV2LIP_PATH, f)) for f in required_files)
+    
+    required_files = [
+        ("inference.py", "Main script"),
+        ("checkpoints/wav2lip_gan.pth", "Wav2Lip model"),
+        ("face_detection/detection/sfd/s3fd.pth", "Face detection model"),
+    ]
+    
+    all_ok = True
+    for rel_path, description in required_files:
+        full_path = os.path.join(WAV2LIP_PATH, rel_path)
+        exists = os.path.isfile(full_path)
+        status = "✓" if exists else "✗"
+        print(f"[Video] {status} {description}: {rel_path}")
+        if not exists:
+            all_ok = False
+    
+    return all_ok
 
 
 def _get_spokesperson_image(image_path: str = "charlie_kirk.jpg") -> str | None:
@@ -112,8 +146,11 @@ def generate_video(
         return None
 
     # Build Wav2Lip inference command
+    # Use sys.executable to run with the venv's Python (where librosa is installed)
+    python_exe = sys.executable
+    
     cmd = [
-        "python",
+        python_exe,
         os.path.join(WAV2LIP_PATH, "inference.py"),
         "--checkpoint_path", os.path.join(WAV2LIP_PATH, "checkpoints", "wav2lip_gan.pth"),
         "--face", img_path,
@@ -122,7 +159,7 @@ def generate_video(
     ]
 
     try:
-        print(f"[Video] Running Wav2Lip... (this may take 30-60 seconds)")
+        print(f"[Video] Running Wav2Lip with venv Python... (this may take 30-60 seconds)")
         subprocess.run(cmd, check=True, cwd=WAV2LIP_PATH)
         
         if os.path.isfile(final_path):
