@@ -41,13 +41,14 @@ Then open `http://localhost:7860` in your browser.
 ## Usage
 Enter the username(GitHub/Wikipedia) in the Username Section.
 
-## Output
+## Use Cases
 
-- Audio saved to `output/<PersonName>_pitch.mp3`
-- Script displayed in the UI
+Pydia can be used for:
 
-## Notes
+- AI-generated developer introduction videos
 
-- Uses **in-memory** ChromaDB — no disk persistence needed
-- gTTS requires an internet connection (calls Google's TTS API)
-- First run downloads the `all-MiniLM-L6-v2` model (~80MB)
+- social media profile content
+
+- portfolio summaries
+
+- quick topic explainers
