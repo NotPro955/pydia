@@ -64,12 +64,12 @@ def run_pipeline(person_name, chunks, image_url, speaker, instruct):
         yield "\n\n".join(logs), pitch, audio_path, None
 
         if not image_url:
-            logs.append("No image found — skipping video")
+            logs.append("No image found — skipping video (will use Charlie Kirk)")
             yield "\n\n".join(logs), pitch, audio_path, None
         else:
-            logs.append("Generating video...")
+            logs.append("Generating video with Charlie Kirk...")
             yield "\n\n".join(logs), pitch, audio_path, None
-            video_path = generate_video(person_name, pitch, audio_path, image_url, output_dir=OUTPUT_DIR)
+            video_path = generate_video(person_name, pitch, audio_path, spokesperson_image="charlie_kirk.jpg", output_dir=OUTPUT_DIR)
             if video_path:
                 logs.append("Done.")
                 yield "\n\n".join(logs), pitch, audio_path, video_path
