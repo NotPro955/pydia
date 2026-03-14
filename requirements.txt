@@ -1,0 +1,11 @@
+requests
+beautifulsoup4
+sentence-transformers
+chromadb
+pyttsx3
+gradio
+fal-client
+python-dotenv
+ffmpeg-python
+kokoro-onnx
+soundfile
