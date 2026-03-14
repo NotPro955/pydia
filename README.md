@@ -1,57 +1,45 @@
-# 🎤 Wikipedia RAG Sales Pitch Generator
+# Pydia
 
-Turn any Wikipedia person page into a 30–45 second AI-powered audio sales pitch.
+Professional profiles and knowledge sources like GitHub and Wikipedia contain valuable information, but they are text-heavy and not easily shareable as engaging content.
 
 ## Architecture
 
 ```
-Wikipedia URL
-    │
-    ▼
-[Phase 1] Scraper (requests + BeautifulSoup)
-    │  → Extracts sections, cleans text, chunks into 200-word overlapping segments
-    ▼
-[Phase 2] Vector Store (ChromaDB + sentence-transformers)
-    │  → Embeds chunks with all-MiniLM-L6-v2, stores in-memory ChromaDB
-    ▼
-[Phase 3] Retrieval
-    │  → Queries DB with 5 sales-oriented prompts, deduplicates top chunks
-    ▼
-[Phase 4] Generation (Claude API via Anthropic SDK)
-    │  → Generates 75-100 word punchy spoken sales script
-    ▼
-[Phase 5] TTS (gTTS)
-    │  → Converts script to MP3 audio (~30-45 seconds)
-    ▼
-[Phase 6] Gradio Web UI
-    └  → Real-time status log, script display, audio playback
+Input (GitHub username or Wikipedia topic)
+                   │
+                   ▼
+Data Collection (GitHub API / Wikipedia API)
+                   │
+                   ▼
+Content Extraction (skills, projects, facts)
+                   │
+                   ▼
+        Structured Profile Dataset
+                   │
+                   ▼
+          AI Script Generation
+                   │
+                   ▼
+            Video Creation
 ```
 
 ## Setup
 
-### 1. Install dependencies
+### 1. Clone Repository
+```bash
+git clone https://github.com/NotPro955/pydia.git
+cd pydia
+```
+
+### 2. Install Dependencies
 ```bash
 pip install -r requirements.txt
-```
-
-### 2. Set your Anthropic API key
-```bash
-export ANTHROPIC_API_KEY=your_key_here
-```
-
-### 3. Run the app
-```bash
-python app.py
 ```
 
 Then open `http://localhost:7860` in your browser.
 
 ## Usage
-
-1. Paste any Wikipedia URL (e.g. `https://en.wikipedia.org/wiki/Nikola_Tesla`)
-2. Click **Generate Pitch**
-3. Watch the pipeline run step by step
-4. Read the generated script and play the audio
+Enter the username(GitHub/Wikipedia) in the Username Section.
 
 ## Output
 
