@@ -1,0 +1,15 @@
+librosa>=0.9.0
+numpy>=1.20.0,<2.0
+scipy>=1.5.0
+opencv-python>=4.5.0
+imageio-ffmpeg>=0.4.0
+imageio>=2.9.0
+torch>=1.10.0
+torchvision>=0.11.0
+tqdm>=4.50.0
+numba>=0.51.2
+resampy>=0.2.1
+soundfile>=0.10.3
+pysoundfile>=0.10.3
+pillow>=8.0
+matplotlib>=3.3
