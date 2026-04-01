@@ -5,7 +5,7 @@ Professional profiles and knowledge sources like GitHub and Wikipedia contain va
 ## Architecture
 
 ```
-Input (GitHub username or Wikipedia topic)
+Input (GitHub username or Wikipedia topics)
                    │
                    ▼
 Data Collection (GitHub API / Wikipedia API)
